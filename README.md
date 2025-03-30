@@ -24,9 +24,6 @@ Streamline your workflow by effortlessly gathering relevant code context for Lar
 ![Main Application Interface](assets/dumpCB.png)
 
 ```
-<!-- Example: -->
-<!-- ![File Selection](docs/images/screenshot_selection.png) -->
-```
 
 ---
 
