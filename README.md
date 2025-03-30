@@ -21,7 +21,7 @@ Streamline your workflow by effortlessly gathering relevant code context for Lar
 
 ## Screenshots
 
-![Main Application Interface](assets/dumpCB.png)
+![Main Application Interface](assets/dumpCB_v2.png)
 
 ---
 
