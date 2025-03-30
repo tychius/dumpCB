@@ -2,7 +2,7 @@
 
 ![Logo](assets/logo.ico)
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) <!-- Example license badge -->
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 Streamline your workflow by effortlessly gathering relevant code context for Large Language Models (LLMs) or other analysis tasks. `dumpCB` scans your project, intelligently filters files using `.gitignore` rules, and generates a clean, formatted context package, ready for use.
 
@@ -23,8 +23,6 @@ Streamline your workflow by effortlessly gathering relevant code context for Lar
 
 ![Main Application Interface](assets/dumpCB.png)
 
-```
-
 ---
 
 ## Installation & Setup (Development)
@@ -38,7 +36,7 @@ To run or develop `dumpCB` locally, follow these steps:
 
 2.  **Clone the Repository:**
     ```bash
-    git clone https://github.com/tychius/dumpCB.git # Replace with your repo URL later
+    git clone https://github.com/tychius/dumpCB.git
     cd dumpCB
     ```
 
