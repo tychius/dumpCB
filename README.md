@@ -1,4 +1,5 @@
-# dumpCB - Context Builder Assistant
+# dumpCB 
+## Code Context Builder for AI Assistance
 
 ![Logo](assets/logo.ico)
 
@@ -21,7 +22,29 @@ Streamline your workflow by effortlessly gathering relevant code context for Lar
 
 ## Screenshots
 
-![Main Application Interface](assets/dumpCB_v2.png)
+### Initial Application View
+
+![Initial Application Interface](assets/dumpCB_v2.png)
+
+When you first launch dumpCB, you're presented with a clean interface where you can select a project folder to analyze. The interface includes:
+- Button to select your project folder
+- Controls to select or deselect files once a project is loaded
+- Action buttons that will become active after selection
+
+---
+
+### Project Analysis and Generated Context
+
+![Project Analysis and Generated Context](assets/dumpCB_main.png)
+
+After selecting a project folder and generating context:
+1. **File Selection Area:** The top section displays checkboxes for including/excluding specific files in your context
+2. **Generated Output:** The bottom section displays:
+   - An organized project structure showing all selected files
+   - Complete file contents with appropriate syntax formatting
+   - Clean Markdown formatting for easy pasting into AI assistants
+
+This formatted output makes it simple for AI tools to understand your code's structure and relationships, leading to more accurate assistance.
 
 ---
 
