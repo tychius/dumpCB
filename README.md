@@ -1,10 +1,10 @@
 # dumpCB - Context Builder Assistant
 
-![Logo](assets/logo.ico) <!-- Optional: If your logo looks good rendered directly -->
+![Logo](assets/logo.ico)
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) <!-- Example license badge -->
 
-A simple desktop application built with Python and PySide6 to help developers quickly gather and format code context from a project directory, respecting `.gitignore` and `.llmignore` rules, and filtering out binary files.
+Streamline your workflow by effortlessly gathering relevant code context for Large Language Models (LLMs) or other analysis tasks. `dumpCB` scans your project, intelligently filters files using `.gitignore` rules, and generates a clean, formatted context package, ready for use.
 
 ---
 
@@ -21,11 +21,10 @@ A simple desktop application built with Python and PySide6 to help developers qu
 
 ## Screenshots
 
-*(Add screenshots here later to showcase the application)*
+![Main Application Interface](assets/dumpCB.png)
 
 ```
 <!-- Example: -->
-<!-- ![Main Window](docs/images/screenshot_main.png) -->
 <!-- ![File Selection](docs/images/screenshot_selection.png) -->
 ```
 
@@ -94,19 +93,15 @@ To create a standalone `.exe` file for Windows:
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details. *(You'll need to create a LICENSE file)*
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ---
 
 ## Contributing
 
-*(Optional: Add guidelines if you want contributions)*
-
 Contributions are welcome! Please feel free to submit a pull request or open an issue.
 
 ## Acknowledgements
-
-*(Optional: Mention any libraries/inspirations you want to credit)*
 
 *   Built with the amazing [PySide6](https://www.qt.io/qt-for-python) library.
 *   Uses [pathspec](https://pypi.org/project/pathspec/) for `.gitignore` style pattern matching.
