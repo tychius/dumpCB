@@ -1,0 +1,42 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "dumpcb"
+version = "0.1.0"
+description = "A utility to dump codebase context."
+readme = "README.md"
+requires-python = ">=3.8"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+]
+license = { text = "MIT" }
+# Project dependencies
+# Use valid PEP 440 specifiers (no caret operator in Python packaging)
+dependencies = [
+    "PySide6>=6.4,<7",
+    "pathspec>=0.11,<1",
+    "chardet>=5.2,<6"
+]
+
+[project.urls]
+"Homepage" = "https://github.com/yourusername/dumpcb" # Replace with actual URL
+"Bug Tracker" = "https://github.com/yourusername/dumpcb/issues" # Replace
+
+# Placeholder entry points, remove or implement
+# [project.entry-points."dumpcb.ignore_providers"]
+# python = "app.config.python_ignore:PythonIgnore"
+# csharp = "app.config.csharp_ignore:CSharpIgnore"
+#
+# [project.entry-points."dumpcb.exporters"]
+# markdown = "app.core.exporters:MarkdownExporter"
+# json     = "app.core.exporters:JSONExporter" 
+
+[tool.setuptools]
+include-package-data = true
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["app*", "assets*"]

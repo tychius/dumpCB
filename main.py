@@ -5,11 +5,11 @@ import logging
 from PySide6.QtWidgets import QApplication
 
 # Import the new main window class (adjust path/name as needed)
-from app.ui.qt_main_window import MainWindow
+from app.ui.windows.main_window import MainWindow
 
 def setup_logging():
     """Configures basic logging for the application."""
-    log_format = '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+    log_format = '%(asctime)s - %(threadName)s - %(name)s - %(levelname)s - %(message)s'
     logging.basicConfig(level=logging.INFO, format=log_format, stream=sys.stdout)
     logger = logging.getLogger(__name__)
     logger.info("Logging configured.")

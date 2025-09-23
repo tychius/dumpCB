@@ -77,6 +77,20 @@ DEFAULT_IGNORE_PATTERNS = [
     "temp/",
     "*.tmp",
     ".llmignore", # Ignore the ignore file itself
+
+    # C# / .NET
+    "bin/", "obj/", ".vs/", "packages/", "TestResults/",
+    "*.csproj.user", "*.suo", "*.nupkg",
+
+    # Image files (added for default ignore)
+    "*.png",
+    "*.jpg",
+    "*.jpeg",
+    "*.gif",
+    "*.ico",
+    "*.svg",
+    # Generated Qt resource files
+    "*resources_rc.py",
 ]
 
 # Directories to ALWAYS ignore during the initial structural scan

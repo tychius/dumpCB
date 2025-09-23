@@ -9,6 +9,21 @@ Streamline your workflow by effortlessly gathering relevant code context for Lar
 
 ---
 
+## Quick Navigation
+- [Getting Started](#installation--setup-development)
+- [Architecture](docs/ARCHITECTURE.md)
+- [Extending](docs/EXTENDING.md)
+- [Contributing](#contributing)
+
+---
+
+## Run in 60 Seconds (CLI Example)
+
+```bash
+# (Coming soon) Generate context for your project in one line:
+dumpcb --project /path/to/your/project --output context.md
+```
+
 ## Key Features
 
 *   **Project Scanning:** Quickly scans a selected project folder.
@@ -19,6 +34,12 @@ Streamline your workflow by effortlessly gathering relevant code context for Lar
 *   **Modern UI:** Built with PySide6 for a responsive user experience.
 *   **Customizable:** respects `.llmignore` for project-specific exclusion rules.
 *   **Cross-Platform Potential:** Built with Python and Qt (though packaging currently focuses on Windows).
+
+## Architecture at a Glance
+
+(Placeholder for architecture diagram: ContextService ↔ Workers ↔ Controllers ↔ Widgets)
+
+See [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) for a detailed architecture overview.
 
 ## Screenshots
 
@@ -77,7 +98,7 @@ To run or develop `dumpCB` locally, follow these steps:
 
 4.  **Install Dependencies:**
     ```bash
-    pip install -r requirements.txt
+    pip install -e .
     ```
 
 ---
@@ -103,8 +124,11 @@ To create a standalone `.exe` file for Windows:
     ```
 3.  Run the PyInstaller build command from the project root directory:
     ```bash
-    python -m PyInstaller --onefile --windowed --icon=assets/logo.ico --add-data "app/ui/style.qss;app/ui" --add-data "assets;assets" run_app.py --name dumpCB
+    python -m PyInstaller --onefile --windowed --icon=assets/logo.ico --name dumpCB run_app.py
     ```
+    Notes:
+    - The stylesheet and icon are embedded via Qt resources (`assets/resources.qrc` compiled into `assets/resources_rc.py`), so no `--add-data` flags are required.
+    - If you change files under `assets/`, regenerate resources: `pyside6-rcc assets/resources.qrc -o assets/resources_rc.py`.
 4.  The executable `dumpCB.exe` will be located in the `dist/` folder.
 
 ---

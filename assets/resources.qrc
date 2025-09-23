@@ -1,0 +1,10 @@
+<!DOCTYPE RCC><RCC version="1.0">
+<qresource prefix="/">
+    <file alias="style.qss">style.qss</file>
+    <file alias="logo.ico">logo.ico</file>
+    <file alias="icons/folder.svg">icons/folder.svg</file>
+    <file alias="icons/file.svg">icons/file.svg</file>
+    <!-- Add other assets like icons here if needed -->
+    <!-- <file alias="icons/my_icon.png">icons/my_icon.png</file> -->
+</qresource>
+</RCC> 

@@ -1,6 +1,5 @@
 import sys
 import logging
-from pathlib import Path
 from PySide6.QtWidgets import QApplication
 from PySide6.QtCore import Qt
 from PySide6.QtGui import QIcon
@@ -8,14 +7,11 @@ from PySide6.QtGui import QIcon
 # Assuming qt_main_window.py is in app/ui/
 # Adjust the import path if necessary based on your structure
 try:
-    # This structure works if run_app.py is in the root (dropCBAI/)
-    from app.ui.qt_main_window import MainWindow
+    # Ensure Qt resources are registered before any icon lookups
+    import assets.resources_rc  # noqa: F401
+    from app.ui.windows.main_window import MainWindow
 except ImportError as e:
-    # Fallback if the structure is different or running from another location
-    # This might require adding the project root to sys.path
-    # or adjusting your project structure/PYTHONPATH
-    logging.error(f"Could not import MainWindow from app.ui.qt_main_window: {e}")
-    logging.error("Ensure run_app.py is in the project root (dropCBAI/).")
+    logging.error(f"Could not import MainWindow/resources: {e}")
     sys.exit(1)
 
 # Basic Logging Setup (can be more sophisticated)
@@ -47,13 +43,9 @@ if __name__ == '__main__':
         # You might set organization details too
         # app.setOrganizationName("YourNameOrCompany") 
         
-        # Set application icon (will be used by taskbar etc. on some systems)
-        icon_path = Path(__file__).parent / "assets" / "logo.ico" # Assumes logo.ico is in assets
-        if icon_path.exists():
-            app.setWindowIcon(QIcon(str(icon_path)))
-            logger.info(f"Application icon set from: {icon_path}")
-        else:
-            logger.warning(f"Application icon not found at: {icon_path}")
+        # Set application icon from Qt resources (works for source and frozen builds)
+        app.setWindowIcon(QIcon(":/logo.ico"))
+        logger.info("Application icon set from Qt resources.")
 
         window = MainWindow()
         window.show()

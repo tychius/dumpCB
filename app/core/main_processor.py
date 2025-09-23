@@ -4,8 +4,8 @@ import time
 from typing import List, Optional
 
 from .ignore_handler import IgnoreHandler
-from .file_processor import scan_project_structure, filter_selected_files
 from .formatter import format_output
+from app.services.context_service import ContextService
 
 logger = logging.getLogger(__name__)
 
@@ -16,18 +16,16 @@ class MainProcessor:
             msg = f"Project path does not exist or is not a directory: {self.project_path}"
             logger.error(msg)
             raise ValueError(msg)
-            
-        # Initialize IgnoreHandler immediately and store it
+        self.ctx_service = ContextService(self.project_path)
         self.ignore_handler: Optional[IgnoreHandler] = None
         try:
             logger.debug(f"Initializing IgnoreHandler for {self.project_path}")
             self.ignore_handler = IgnoreHandler(self.project_path)
             logger.debug("IgnoreHandler initialized.")
-        except Exception as e:
+        except (OSError, IOError) as e:
             msg = f"Failed to initialize IgnoreHandler: {e}"
             logger.exception(msg)
-            # We can let this error propagate or handle it depending on desired UI behavior
-            raise RuntimeError(msg) from e 
+            raise RuntimeError(msg) from e
 
     def run_scan_phase(self) -> List[Path]:
         """
@@ -41,10 +39,11 @@ class MainProcessor:
         start_time = time.time()
         logger.info(f"Starting scan phase for: {self.project_path}")
         try:
-            all_paths = scan_project_structure(self.project_path)
+            included, ignored = self.ctx_service.scan(force=True)
             scan_time = time.time() - start_time
-            logger.info(f"Scan phase completed in {scan_time:.2f} seconds. Found {len(all_paths)} items.")
-            return all_paths
+            combined = sorted(set(included + ignored))
+            logger.info(f"Scan phase completed in {scan_time:.2f} seconds. Found {len(combined)} items.")
+            return combined
         except Exception as e:
             logger.exception("Error during scan phase")
             raise RuntimeError(f"Failed to scan project structure: {e}") from e
@@ -71,16 +70,25 @@ class MainProcessor:
         logger.info(f"Starting generate phase with {len(selected_relative_paths)} selected paths.")
         
         try:
-            # 1. Filter the selected paths using full ignores and binary check
-            logger.debug("Filtering selected files...")
-            filtered_files = filter_selected_files(
-                self.project_path, selected_relative_paths, self.ignore_handler
-            )
-            logger.info(f"Filtered selection down to {len(filtered_files)} files for content generation.")
+            # The scan for all files might be cached, use force=False
+            included, ignored = self.ctx_service.scan(force=False)
+            all_project_files = sorted(set(included))
+            
+            # selected_relative_paths already comes filtered from the UI (ignored items are disabled)
+            # Filter selected paths to ensure they are actually files, just in case
+            valid_selected_files = [p for p in selected_relative_paths if (self.project_path / p).is_file()]
+            logger.info(f"Generating context for {len(valid_selected_files)} valid selected files.")
 
-            # 2. Format the output
+            # 2. Format the output using the valid selected files and all discovered files
             logger.debug("Formatting output...")
-            formatted_output = format_output(self.project_path, filtered_files)
+            token_map = self.ctx_service.estimate_tokens(included)
+
+            formatted_output = format_output(
+                self.project_path,
+                valid_selected_files,
+                all_project_files,
+                file_token_map=token_map,
+            )
             logger.debug("Output formatted.")
 
             generate_time = time.time() - start_time
