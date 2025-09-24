@@ -1,42 +1,48 @@
-"""
-thread_pool: Provides a shared ThreadPoolExecutor for background tasks.
-Respects DUMPCB_MAX_WORKERS env var for concurrency control.
-Public API: SHARED_POOL, get_shared_pool(), MAX_WORKERS.
-"""
+"""Shared thread pool helpers."""
+from __future__ import annotations
+
+import atexit
+import logging
 import os
 from concurrent.futures import ThreadPoolExecutor
-import logging
 
 logger = logging.getLogger(__name__)
 
+
 def _get_max_workers() -> int:
-    """Determines the max workers for the pool, respecting the env var."""
-    default_workers = os.cpu_count() or 4
+    default_workers = max(1, os.cpu_count() or 4)
+    env_value = os.environ.get("DUMPCB_MAX_WORKERS")
+    if not env_value:
+        logger.info("Using default max_workers=%s for shared thread pool.", default_workers)
+        return default_workers
+
     try:
-        env_workers = os.environ.get("DUMPCB_MAX_WORKERS")
-        if env_workers:
-            max_workers = int(env_workers)
-            logger.info(f"Using DUMPCB_MAX_WORKERS={max_workers} for shared thread pool.")
-            return max_workers
-        else:
-            logger.info(f"Using default max_workers={default_workers} (CPU count or 4) for shared thread pool.")
-            return default_workers
+        parsed = int(env_value)
     except ValueError:
-        logger.warning(f"Invalid value for DUMPCB_MAX_WORKERS: '{env_workers}'. Using default: {default_workers}.")
-        return default_workers
-    except Exception as e:
-        logger.exception(f"Error reading DUMPCB_MAX_WORKERS environment variable. Using default: {default_workers}.")
+        logger.warning("Invalid value for DUMPCB_MAX_WORKERS=%r. Using default %s.", env_value, default_workers)
         return default_workers
 
-# Determine max workers and store it
+    if parsed < 1:
+        logger.warning("DUMPCB_MAX_WORKERS=%s is less than 1. Using default %s.", parsed, default_workers)
+        return default_workers
+
+    logger.info("Using DUMPCB_MAX_WORKERS=%s for shared thread pool.", parsed)
+    return parsed
+
+
 MAX_WORKERS = _get_max_workers()
-
-# Module-level shared thread pool
 SHARED_POOL = ThreadPoolExecutor(max_workers=MAX_WORKERS)
 
-# Optional: Add a function to get the pool if needed elsewhere, 
+
+def _shutdown_pool() -> None:
+    SHARED_POOL.shutdown(wait=False)
+
+
 def get_shared_pool() -> ThreadPoolExecutor:
-    """Returns the shared ThreadPoolExecutor instance."""
+    """Return the shared ThreadPoolExecutor instance."""
     return SHARED_POOL
 
-__all__ = ["SHARED_POOL", "get_shared_pool", "MAX_WORKERS"] 
+
+atexit.register(_shutdown_pool)
+
+__all__ = ["SHARED_POOL", "get_shared_pool", "MAX_WORKERS"]
